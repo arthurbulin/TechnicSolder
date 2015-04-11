@@ -51,6 +51,7 @@ class ModController extends BaseController {
 			'pretty_name' => 'required',
 			'link' => 'url',
 			'donatelink' => 'url',
+			'side' => 'required',
 			);
 		$messages = array(
 			'name.required' => 'You must fill in a mod slug name.',
@@ -58,6 +59,7 @@ class ModController extends BaseController {
 			'pretty_name.required' => 'You must enter in a mod name',
 			'link.url' => 'You must enter a properly formatted Website',
 			'donatelink.url' => 'You must enter a proper formatted Donation Link',
+			'side.required' => 'You must fill in a side.',
 			);
 
 		$validation = Validator::make(Input::all(), $rules, $messages);
@@ -71,6 +73,7 @@ class ModController extends BaseController {
 		$mod->description = Input::get('description');
 		$mod->link = Input::get('link');
 		$mod->donatelink = Input::get('donatelink');
+		$mod->side = Input::get('side');
 		$mod->save();
 		return Redirect::to('mod/view/'.$mod->id);
 	}
@@ -95,6 +98,7 @@ class ModController extends BaseController {
 			'name' => 'required|unique:mods,name,'.$mod->id,
 			'link' => 'url',
 			'donatelink' => 'url',
+			'side' => 'required',
 			);
 
 		$messages = array(
@@ -103,6 +107,7 @@ class ModController extends BaseController {
 			'pretty_name.required' => 'You must enter in a mod name',
 			'link.url' => 'You must enter a properly formatted Website',
 			'donatelink.url' => 'You must enter a proper formatted Donation Link',
+			'side.required' => 'You must fill in a side.',
 			);
 
 		$validation = Validator::make(Input::all(), $rules, $messages);
@@ -115,6 +120,7 @@ class ModController extends BaseController {
 		$mod->description = Input::get('description');
 		$mod->link = Input::get('link');
 		$mod->donatelink = Input::get('donatelink');
+		$mod->side = Input::get('side');
 		$mod->save();
 		Cache::forget('mod.'.$mod->name);
 

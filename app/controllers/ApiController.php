@@ -300,14 +300,20 @@ class APIController extends BaseController {
 		$response['forge'] = $build->forge;
 		$response['mods'] = array();
 
+		$api_side = Input::has('side') ? Mod::getSideByName(Input::get('side')) : Mod::SIDE_CLIENT;
+
 		if (!Input::has('include'))
 		{
-			if (Cache::has('modpack.'.$slug.'.build.'.$buildpass.'modversion') && empty($this->client) && empty($this->key))
+			if (Cache::has('modpack.'.$api_side.'.'.$slug.'.build.'.$buildpass.'modversion') && empty($this->client) && empty($this->key))
 			{
-				$response['mods'] = Cache::get('modpack.'.$slug.'.build.'.$buildpass.'modversion');
+				$response['mods'] = Cache::get('modpack.'.$api_side.'.'.$slug.'.build.'.$buildpass.'modversion');
 			} else {
 				foreach ($build->modversions as $modversion)
 				{
+					$mod_side = $modversion->mod->side;
+					if($api_side != Mod::SIDE_BOTH && $mod_side != Mod::SIDE_BOTH && $mod_side != $api_side)
+						continue;
+
 					$response['mods'][] = array(
 												"name" => $modversion->mod->name,
 												"version" => $modversion->version,
@@ -317,15 +323,19 @@ class APIController extends BaseController {
 												);
 				}
 				usort($response['mods'], function($a, $b){return strcasecmp($a['name'], $b['name']);});
-				Cache::put('modpack.'.$slug.'.build.'.$buildpass.'modversion',$response['mods'],5);
+				Cache::put('modpack.'.$api_side.'.'.$slug.'.build.'.$buildpass.'modversion',$response['mods'],5);
 			}
 		} else if (Input::get('include') == "mods") {
-			if (Cache::has('modpack.'.$slug.'.build.'.$buildpass.'modversion.include.mods') && empty($this->client) && empty($this->key))
+			if (Cache::has('modpack.'.$api_side.'.'.$slug.'.build.'.$buildpass.'modversion.include.mods') && empty($this->client) && empty($this->key))
 			{
-				$response['mods'] = Cache::get('modpack.'.$slug.'.build.'.$buildpass.'modversion.include.mods');
+				$response['mods'] = Cache::get('modpack.'.$api_side.'.'.$slug.'.build.'.$buildpass.'modversion.include.mods');
 			} else {
 				foreach ($build->modversions as $modversion)
 				{
+					$mod_side = $modversion->mod->side;
+					if($api_side != Mod::SIDE_BOTH && $mod_side != Mod::SIDE_BOTH && $mod_side != $api_side)
+						continue;
+
 					$response['mods'][] = array(
 												"name" => $modversion->mod->name,
 												"version" => $modversion->version,
@@ -340,16 +350,20 @@ class APIController extends BaseController {
 												);
 				}
 				usort($response['mods'], function($a, $b){return strcasecmp($a['name'], $b['name']);});
-				Cache::put('modpack.'.$slug.'.build.'.$buildpass.'modversion.include.mods',$response['mods'],5);
+				Cache::put('modpack.'.$api_side.'.'.$slug.'.build.'.$buildpass.'modversion.include.mods',$response['mods'],5);
 			}
 		} else {
 			$request = explode(",", Input::get('include'));
-			if (Cache::has('modpack.'.$slug.'.build.'.$buildpass.'modversion.include.'.$request) && empty($this->client) && empty($this->key))
+			if (Cache::has('modpack.'.$api_side.'.'.$slug.'.build.'.$buildpass.'modversion.include.'.$request) && empty($this->client) && empty($this->key))
 			{
-				$response['mods'] = Cache::get('modpack.'.$slug.'.build.'.$buildpass.'modversion.include.'.$request);
+				$response['mods'] = Cache::get('modpack.'.$api_side.'.'.$slug.'.build.'.$buildpass.'modversion.include.'.$request);
 			} else {
 				foreach ($build->modversions as $modversion)
 				{
+					$mod_side = $modversion->mod->side;
+					if($api_side != Mod::SIDE_BOTH && $mod_side != Mod::SIDE_BOTH && $mod_side != $api_side)
+						continue;
+
 					$data = array(
 												"name" => $modversion->mod->name,
 												"version" => $modversion->version,
@@ -360,6 +374,11 @@ class APIController extends BaseController {
 					$mod = $mod['attributes'];
 					foreach ($request as $type)
 					{
+						if ($type === 'side')
+						{
+							$data['side'] = $mod->getSideName();
+							continue;
+						}
 						if (isset($mod[$type]))
 							$data[$type] = $mod[$type];
 					}
@@ -367,7 +386,7 @@ class APIController extends BaseController {
 					$response['mods'][] = $data;
 				}
 				usort($response['mods'], function($a, $b){return strcasecmp($a['name'], $b['name']);});
-				Cache::put('modpack.'.$slug.'.build.'.$buildpass.'modversion.include.'.$request,$response['mods'],5);
+				Cache::put('modpack.'.$api_side.'.'.$slug.'.build.'.$buildpass.'modversion.include.'.$request,$response['mods'],5);
 			}
 		}
 
