@@ -57,6 +57,14 @@
 													<label for="link">Mod Website</label>
 													<input type="text" class="form-control" name="link" id="link" value="{{ $mod->link }}">
 											</div>
+											<div class="form-group">
+												<label for="side">Mod Side</label>
+												<select class="form-control" name="side" size="1">
+													<option value="{{Mod::SIDE_BOTH}}" {{ $mod->side == Mod::SIDE_BOTH ? 'selected="selected"' : '' }}>Both</option>
+													<option value="{{Mod::SIDE_CLIENT}}" {{ $mod->side == Mod::SIDE_CLIENT ? 'selected="selected"' : '' }}>Client</option>
+													<option value="{{Mod::SIDE_SERVER}}" {{ $mod->side == Mod::SIDE_SERVER ? 'selected="selected"' : '' }}>Server</option>
+												</select>
+											</div>
 						</div>
 					</div>
 					{{ Form::submit('Save Changes', array('class' => 'btn btn-success')) }}

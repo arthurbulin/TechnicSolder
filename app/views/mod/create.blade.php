@@ -41,6 +41,14 @@
                     <label for="link">Mod Website</label>
                     <input type="text" class="form-control" name="link" id="link">
                 </div>
+                <div class="form-group">
+                    <label for="side">Mod Side</label>
+                    <select class="form-control" name="side" size="1">
+                        <option value="{{Mod::SIDE_BOTH}}" selected="selected">Both</option>
+                        <option value="{{Mod::SIDE_CLIENT}}">Client</option>
+                        <option value="{{Mod::SIDE_SERVER}}">Server</option>
+                    </select>
+                </div>
 			</div>
 			<div class="col-md-6">
 				<p>Because Solder doesn't do any file handling yet you will need to manually manage your set of mods in your repository. The mod repository structure is very strict and must match your Solder data exact. An example of your mod directory structure will be listed below:</p>
