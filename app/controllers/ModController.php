@@ -6,10 +6,7 @@ class ModController extends BaseController {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->beforeFilter('perm', array('solder_mods'));
-		$this->beforeFilter('perm', array('mods_manage'), array('only' => array('view','versions')));
-		$this->beforeFilter('perm', array('mods_create'), array('only' => array('create')));
-		$this->beforeFilter('perm', array('mods_delete'), array('only' => array('delete')));
+		$this->beforeFilter('solder_mods');
 	}
 
 		public function getIndex()
@@ -50,7 +47,10 @@ class ModController extends BaseController {
 			'name' => 'required|unique:mods',
 			'pretty_name' => 'required',
 			'link' => 'url',
+<<<<<<< HEAD
 			'donatelink' => 'url',
+=======
+>>>>>>> 0418c3cdda07cc5c7070530dd4acee936e66ea89
 			'side' => 'required',
 			);
 		$messages = array(
@@ -58,7 +58,10 @@ class ModController extends BaseController {
 			'name.unique' => 'The slug you entered is already taken',
 			'pretty_name.required' => 'You must enter in a mod name',
 			'link.url' => 'You must enter a properly formatted Website',
+<<<<<<< HEAD
 			'donatelink.url' => 'You must enter a proper formatted Donation Link',
+=======
+>>>>>>> 0418c3cdda07cc5c7070530dd4acee936e66ea89
 			'side.required' => 'You must fill in a side.',
 			);
 
@@ -72,7 +75,10 @@ class ModController extends BaseController {
 		$mod->author = Input::get('author');
 		$mod->description = Input::get('description');
 		$mod->link = Input::get('link');
+<<<<<<< HEAD
 		$mod->donatelink = Input::get('donatelink');
+=======
+>>>>>>> 0418c3cdda07cc5c7070530dd4acee936e66ea89
 		$mod->side = Input::get('side');
 		$mod->save();
 		return Redirect::to('mod/view/'.$mod->id);
@@ -97,7 +103,10 @@ class ModController extends BaseController {
 			'pretty_name' => 'required',
 			'name' => 'required|unique:mods,name,'.$mod->id,
 			'link' => 'url',
+<<<<<<< HEAD
 			'donatelink' => 'url',
+=======
+>>>>>>> 0418c3cdda07cc5c7070530dd4acee936e66ea89
 			'side' => 'required',
 			);
 
@@ -106,7 +115,10 @@ class ModController extends BaseController {
 			'name.unique' => 'The slug you entered is already in use by another mod',
 			'pretty_name.required' => 'You must enter in a mod name',
 			'link.url' => 'You must enter a properly formatted Website',
+<<<<<<< HEAD
 			'donatelink.url' => 'You must enter a proper formatted Donation Link',
+=======
+>>>>>>> 0418c3cdda07cc5c7070530dd4acee936e66ea89
 			'side.required' => 'You must fill in a side.',
 			);
 
@@ -119,7 +131,10 @@ class ModController extends BaseController {
 		$mod->author = Input::get('author');
 		$mod->description = Input::get('description');
 		$mod->link = Input::get('link');
+<<<<<<< HEAD
 		$mod->donatelink = Input::get('donatelink');
+=======
+>>>>>>> 0418c3cdda07cc5c7070530dd4acee936e66ea89
 		$mod->side = Input::get('side');
 		$mod->save();
 		Cache::forget('mod.'.$mod->name);

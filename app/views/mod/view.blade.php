@@ -58,9 +58,12 @@
 													<input type="text" class="form-control" name="link" id="link" value="{{ $mod->link }}">
 											</div>
 											<div class="form-group">
-													<label for="donatelink">Author Donation Link</label>
-													<input type="text" class="form-control" name="donatelink" id="donatelink" value="{{ $mod->donatelink }}">
-													<span class="help-block">This is only in use by the official Technic Solder</span>
+												<label for="side">Mod Side</label>
+												<select class="form-control" name="side" size="1">
+													<option value="{{Mod::SIDE_BOTH}}" {{ $mod->side == Mod::SIDE_BOTH ? 'selected="selected"' : '' }}>Both</option>
+													<option value="{{Mod::SIDE_CLIENT}}" {{ $mod->side == Mod::SIDE_CLIENT ? 'selected="selected"' : '' }}>Client</option>
+													<option value="{{Mod::SIDE_SERVER}}" {{ $mod->side == Mod::SIDE_SERVER ? 'selected="selected"' : '' }}>Server</option>
+												</select>
 											</div>
 											<div class="form-group">
 												<label for="side">Mod Side</label>
@@ -154,7 +157,7 @@ $('#add').submit(function(e) {
 			data: $("#add").serialize(),
 			success: function (data) {
 				if (data.status == "success") {
-					$("#add-row").after('<tr><td></td><td>' + data.version + '</td><td>' + data.md5 + '</td><td><a href="' + mirror_url + 'mods/{{ $mod->name }}/{{ $mod->name }}-' + data.version + '.zip" target="_blank">{mods/{{ $mod->name }}/{{ $mod->name }}-' + data.version + '.zip</a></td><td>' + data.filesize + '</td><td></td></tr>');
+					$("#add-row").after('<tr><td></td><td>' + data.version + '</td><td>' + data.md5 + '</td><td><a href="' + mirror_url + 'mods/{{ $mod->name }}/{{ $mod->name }}-' + data.version + '.zip" target="_blank">' + mirror_url + 'mods/{{ $mod->name }}/{{ $mod->name }}-' + data.version + '.zip</a></td><td>' + data.filesize + '</td><td></td></tr>');
 					$.jGrowl('Added mod version at ' + data.version, { group: 'alert-success' });
 				} else if (data.status == "warning") {
 					$("#add-row").after('<tr><td></td><td>' + data.version + '</td><td>' + data.md5 + '</td><td><a href="' + mirror_url + 'mods/{{ $mod->name }}/{{ $mod->name }}-' + data.version + '.zip" target="_blank">' + mirror_url + 'mods/{{ $mod->name }}/{{ $mod->name }}-' + data.version + '.zip</a></td><td>' + data.filesize + '</td><td></td></tr>');

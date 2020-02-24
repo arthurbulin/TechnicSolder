@@ -5,6 +5,8 @@ class APIController extends BaseController {
 	public function __construct()
 	{
 		parent::__construct();
+		
+		$this->afterFilter('cors');
 
 		/* This checks the client list for the CID. If a matching CID is found, all caching will be ignored
 		   for this request */
@@ -145,12 +147,12 @@ class APIController extends BaseController {
 	{
 		$response = array();
 
+		$response['id'] = $mod->id;
 		$response['name'] = $mod->name;
 		$response['pretty_name'] = $mod->pretty_name;
 		$response['author'] = $mod->author;
 		$response['description'] = $mod->description;
 		$response['link'] = $mod->link;
-		$response['donate'] = $mod->donatelink;
 		$response['versions'] = array();
 
 		foreach ($mod->versions as $version)
@@ -171,6 +173,7 @@ class APIController extends BaseController {
 		if (empty($version))
 			return array("error" => "Mod version does not exist");
 
+		$response['id'] = $version->id;
 		$response['md5'] = $version->md5;
 		$response['filesize'] = $version->filesize;
 		$response['url'] = Config::get('solder.mirror_url').'mods/'.$version->mod->name.'/'.$version->mod->name.'-'.$version->version.'.zip';
@@ -232,6 +235,7 @@ class APIController extends BaseController {
 		if (empty($modpack))
 			return array("error" => "Modpack does not exist");
 
+		$response['id']		    = $modpack->id;
 		$response['name']           = $modpack->slug;
 		$response['display_name']   = $modpack->name;
 		$response['url']            = $modpack->url;
@@ -294,6 +298,7 @@ class APIController extends BaseController {
 		if (empty($build))
 			return array("error" => "Build does not exist");
 
+		$response['id'] = $build->id;
 		$response['minecraft'] = $build->minecraft;
 		$response['java'] = $build->min_java;
 		$response['memory'] = $build->min_memory;
@@ -315,6 +320,7 @@ class APIController extends BaseController {
 						continue;
 
 					$response['mods'][] = array(
+												"id" => $modversion->id,
 												"name" => $modversion->mod->name,
 												"version" => $modversion->version,
 												"md5" => $modversion->md5,
@@ -337,6 +343,7 @@ class APIController extends BaseController {
 						continue;
 
 					$response['mods'][] = array(
+												"id" => $modversion->id,
 												"name" => $modversion->mod->name,
 												"version" => $modversion->version,
 												"md5" => $modversion->md5,
@@ -345,7 +352,6 @@ class APIController extends BaseController {
 												"author" => $modversion->mod->author,
 												"description" => $modversion->mod->description,
 												"link" => $modversion->mod->link,
-												"donate" => $modversion->mod->donatelink,
 												"url" => Config::get('solder.mirror_url').'mods/'.$modversion->mod->name.'/'.$modversion->mod->name.'-'.$modversion->version.'.zip'
 												);
 				}
@@ -365,6 +371,7 @@ class APIController extends BaseController {
 						continue;
 
 					$data = array(
+												"id" => $modversion->id,
 												"name" => $modversion->mod->name,
 												"version" => $modversion->version,
 												"md5" => $modversion->md5,
